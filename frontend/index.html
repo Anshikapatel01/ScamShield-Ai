@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScamShield AI</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #00000015;
+        }
+
+        h1 {
+            color: #173b67;
+        }
+
+        p {
+            color: #526477;
+        }
+
+        textarea {
+            box-sizing: border-box;
+            width: 100%;
+            height: 150px;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #bdc9d6;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+        }
+
+        button {
+            background: #1769aa;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            white-space: pre-line;
+        }
+
+        .result-card {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 10px;
+    text-align: left;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+.result-card.red {
+    background: #fee2e2;
+    border: 1px solid #dc2626;
+    color: #991b1b;
+}
+
+.result-card.orange {
+    background: #ffedd5;
+    border: 1px solid #ea580c;
+    color: #9a3412;
+}
+
+.result-card.green {
+    background: #dcfce7;
+    border: 1px solid #16a34a;
+    color: #166534;
+}
+#clearButton {
+    background: #64748b;
+    margin-left: 8px;
+}
+
+#clearButton:hover {
+    background: #475569;
+}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🛡️ ScamShield AI</h1>
+        <p>Check suspicious messages before you trust them.</p>
+
+        <textarea id="message"
+            placeholder="Paste your message here..."></textarea>
+
+        <br>
+        <button id="checkButton">Check Message</button>
+        <button id="clearButton"type="button">Clear</button>
+
+        <div id="result" class="result-card" aria-live="polite"></div>
+        <div id="historySection" style="margin-top: 30px; text-align: left;">
+    <h2>Scan History</h2>
+    <div id="historyList">
+        <p>No scan history yet.</p>
+    </div>
+    <button id="clearHistoryButton" type="button">
+        Clear History
+    </button>
+</div>
+    </div>
+
+    <script>
+        const button = document.getElementById("checkButton");
+        const clearButton = document.getElementById("clearButton");
+
+clearButton.addEventListener("click", function () {
+    document.getElementById("message").value = "";
+    resultBox.textContent = "";
+    resultBox.hidden = true;
+    resultBox.className = "result-card";
+});
+        const resultBox = document.getElementById("result");
+        const historyList = document.getElementById("historyList");
+const clearHistoryButton = document.getElementById("clearHistoryButton");
+
+let scanHistory = JSON.parse(localStorage.getItem("scanHistory")) || [];
+
+function saveHistory(message, risk) {
+    const scan = {
+        message: message,
+        risk: risk,
+        time: new Date().toLocaleString()
+    };
+
+    scanHistory.unshift(scan);
+    scanHistory = scanHistory.splice(0,10);
+
+    localStorage.setItem("scanHistory", JSON.stringify(scanHistory));
+
+    displayHistory();
+}
+
+function displayHistory() {
+    historyList.innerHTML = "";
+
+    if (scanHistory.length === 0) {
+        historyList.textContent = "No scan history yet.";
+        return;
+    }
+
+    scanHistory.forEach(function (scan,index) {
+        const item = document.createElement("div");
+        item.style.padding = "12px";
+        item.style.marginBottom = "10px";
+        item.style.border = "1px solid #cbd5e1";
+        item.style.borderRadius = "8px";
+
+        const message = document.createElement("p");
+        message.textContent = scan.message;
+
+        const risk = document.createElement("strong");
+        risk.textContent = "Risk: " + scan.risk;
+
+        const time = document.createElement("small");
+time.textContent = scan.time;
+
+const deleteButton = document.createElement("button");
+deleteButton.textContent = "Delete";
+deleteButton.style.background = "#dc2626";
+deleteButton.style.padding = "6px 12px";
+deleteButton.style.marginTop = "10px";
+
+deleteButton.addEventListener("click", function () {
+    scanHistory.splice(index, 1);
+    localStorage.setItem("scanHistory", JSON.stringify(scanHistory));
+    displayHistory();
+});
+
+item.append(message, risk, document.createElement("br"), time, document.createElement("br"), deleteButton);
+historyList.appendChild(item);
+    });
+}
+
+clearHistoryButton.addEventListener("click", function () {
+    scanHistory = [];
+    localStorage.removeItem("scanHistory");
+    displayHistory();
+});
+
+displayHistory();
+
+        button.addEventListener("click", async function () {
+            const message = document.getElementById("message").value.trim();
+
+            if (!message) {
+                resultBox.textContent = "Please enter a message first.";
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = "Checking...";
+            resultBox.textContent = "";
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/predict", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    resultBox.textContent = "Error: " + JSON.stringify(data);
+                    return;
+                }
+
+                const risk = data.risk_level;
+
+let cardClass = "";
+let safetyMessage = "";
+
+if (risk === "RED") {
+    cardClass = "red";
+    safetyMessage = "Warning: This message may be dangerous. Do not share OTPs or passwords.";
+} else if (risk === "ORANGE") {
+    cardClass = "orange";
+    safetyMessage = "Caution: This message looks suspicious. Verify it before taking action.";
+} else {
+    cardClass = "green";
+    safetyMessage = "No known warning signs found. Still, stay alert.";
+}
+
+resultBox.className = "result-card " + cardClass;
+resultBox.hidden = false;
+
+const reasons = data.reasons || [];
+saveHistory(message,risk);
+
+resultBox.className = "result-card " + cardClass;
+resultBox.hidden = false;
+
+resultBox.textContent =
+    "Risk Level: " + risk +
+    "\nModel confidence: " + data.confidence + "%" +
+    "\n\n" + safetyMessage +
+    "\n\nWarning reasons:\n" +
+    (reasons.length > 0
+        ? reasons.map(reason => "• " + reason).join("\n")
+        : "No specific rule-based warning reasons found.");
+            } catch (error) {
+                resultBox.textContent = "Error:" + error.message; 
+                console.error("Scan error:",error);
+            } finally {
+                button.disabled = false;
+                button.textContent = "Check Message";
+            }
+        });
+    </script>
+</body>
+</html>
