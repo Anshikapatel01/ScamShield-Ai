@@ -1,0 +1,61 @@
+message,label
+Your salary has been credited to your account.,GREEN
+Your bank statement is available in the official app.,GREEN
+Your electricity bill is due on 15 October. Pay through the official app.,GREEN
+Your refund has been processed and will reach your account.,GREEN
+Your credit card payment was successful.,GREEN
+I transferred the money for our lunch.,GREEN
+Aapka broadband bill official app mein ready hai.,GREEN
+Aapki salary account mein credit ho gayi hai.,GREEN
+Aapka order ship ho gaya hai. Official app mein tracking dekhein.,GREEN
+Refund process complete ho gaya hai.,GREEN
+आपका बिजली बिल 15 अक्टूबर को देय है। आधिकारिक ऐप से भुगतान करें।,GREEN
+आपकी टैक्स भुगतान रसीद आधिकारिक पोर्टल पर उपलब्ध है।,GREEN
+आपका क्रेडिट कार्ड स्टेटमेंट आधिकारिक ऐप में उपलब्ध है।,GREEN
+आपकी बुकिंग रद्द हो गई है और रिफंड जारी किया जा रहा है।,GREEN
+आपका गैस बिल अगले सप्ताह देय है। आधिकारिक ऐप में विवरण देखें।,GREEN
+आपका UPI भुगतान सफल रहा। रसीद आधिकारिक ऐप में उपलब्ध है।,GREEN
+Your fixed deposit interest has been credited.,GREEN
+Your mobile recharge was completed successfully.,GREEN
+Can you send me the photo from yesterday?,GREEN
+Your train ticket booking is confirmed.,GREEN
+Click this link to receive your free shopping voucher.,ORANGE
+You have won a lucky draw. Pay a small processing fee to claim your reward.,ORANGE
+Urgent! Click here to claim your prize.,ORANGE
+Your reward points are expiring. Check the offer in the app.,ORANGE
+Limited-time cashback offer available on your next payment.,ORANGE
+Upgrade your mobile plan today and get extra data.,ORANGE
+You are eligible for a special loan offer. Learn more.,ORANGE
+Aapko shopping cashback offer mila hai. Details check karein.,ORANGE
+Aapke reward points expire hone wale hain. Offer dekhein.,ORANGE
+Aaj hi mobile plan upgrade karein aur extra data paayein.,ORANGE
+Aapke liye special loan offer available hai. Details dekhein.,ORANGE
+आपको विशेष कैशबैक ऑफर मिला है। ऐप में जानकारी देखें।,ORANGE
+आपके रिवॉर्ड पॉइंट जल्द समाप्त होंगे। ऑफर देखें।,ORANGE
+ऑनलाइन शॉपिंग पर आज अतिरिक्त छूट उपलब्ध है।,ORANGE
+आपके लिए एक नया ट्रैवल ऑफर उपलब्ध है।,ORANGE
+Your parcel delivery address needs an update. Review the notification.,ORANGE
+You have a promotional investment webinar invitation.,ORANGE
+Complete an online task to earn extra money. Details inside.,ORANGE
+Get a special discount if you renew your subscription today.,ORANGE
+Your courier notification has a new delivery option.,ORANGE
+Your account will be blocked unless you share the OTP immediately.,RED
+Your bank account has suspicious activity. Transfer money to this safe account.,RED
+KYC expired. Send your OTP and PAN details to reactivate your account.,RED
+Your debit card will be blocked. Share your CVV and PIN to verify.,RED
+Police action is pending. Transfer money now to avoid arrest.,RED
+Your electricity connection will be disconnected tonight. Pay using this link immediately.,RED
+Refund failed. Send your UPI PIN to receive the money.,RED
+Your SIM will be disconnected today. Share the OTP to keep it active.,RED
+Install this remote access app so our bank agent can fix your account.,RED
+Your investment withdrawal is blocked. Pay tax to release the funds.,RED
+Aapka account block hone wala hai. OTP abhi share karke verify karein.,RED
+Aapka KYC expire ho gaya hai. Reactivate karne ke liye OTP bhejein.,RED
+Aapka debit card band ho jayega. PIN aur CVV verify karein.,RED
+Police case se bachne ke liye turant paise transfer karein.,RED
+Refund lene ke liye UPI PIN enter karke screenshot bhejein.,RED
+SIM band hone se bachane ke liye OTP share karein.,RED
+Bank support ke naam par remote access app install karne ko kaha ja raha hai.,RED
+Investment ka paisa nikalne ke liye pehle tax fee transfer karein.,RED
+आपका खाता बंद होने वाला है। सत्यापन के लिए OTP तुरंत भेजें।,RED
+बैंक सुरक्षा जांच के नाम पर अपना PIN और CVV साझा करें।,RED

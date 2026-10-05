@@ -1,0 +1,31 @@
+message,label
+"Your electricity connection will be disconnected today. Pay immediately through this link.",RED
+"Bijli connection aaj band ho jayega, turant payment karo aur link kholo.",RED
+"आपका बिजली कनेक्शन आज काट दिया जाएगा। तुरंत भुगतान करें।",RED
+"Government benefit approved. Pay a registration fee to receive the money.",RED
+"सरकारी लाभ पाने के लिए पहले रजिस्ट्रेशन फीस जमा करें।",RED
+"You have been selected for a government benefit. Send money to claim it.",RED
+"Insurance refund is waiting. Send your bank login details to receive it.",RED
+"बीमा रिफंड पाने के लिए अपना बैंक लॉगिन और पासवर्ड भेजें।",RED
+"Your refund can only be processed after sharing your banking credentials.",RED
+"Your account will be blocked unless you click this link and verify immediately.",RED
+"तुरंत KYC अपडेट करें वरना आपका बैंक खाता बंद हो जाएगा।",RED
+"Aapka SIM band ho jayega. OTP share karke verification complete karein.",RED
+"Your reward points are available. Check them in the official app.",ORANGE
+"आपके रिवॉर्ड पॉइंट उपलब्ध हैं। आधिकारिक ऐप में जांचें।",ORANGE
+"Free shopping voucher available. Click the link to claim it.",ORANGE
+"Your parcel is waiting for address confirmation. Update it to continue delivery.",ORANGE
+"आपके पार्सल का पता अपडेट करना जरूरी हो सकता है।",ORANGE
+"Limited time cashback offer available on your next purchase.",ORANGE
+"Special loan offer available. Check the details before applying.",ORANGE
+"लकी ड्रॉ में आपका नाम आया है। इनाम की जानकारी देखें।",ORANGE
+"Your refund status is available in the official payment app.",GREEN
+"आधिकारिक ऐप में अपने रिफंड की स्थिति जांचें।",GREEN
+"Your electricity bill is due. Please check the amount in the official app.",GREEN
+"आपका वेतन आपके बैंक खाते में जमा हो गया है।",GREEN
+"I transferred the money for our lunch.",GREEN
+"Can we meet for lunch today?",GREEN
+"Your order has shipped. Track it using the official shopping app.",GREEN
+"आधिकारिक ऐप में अपने ऑर्डर की डिलीवरी स्थिति देखें।",GREEN
+"Your bank statement is available in the official banking app.",GREEN
+"आपका क्रेडिट कार्ड भुगतान सफल हो गया है।",GREEN

@@ -1,0 +1,16 @@
+message,expected
+"Your salary has been credited to your bank account.",GREEN
+"Can you call me when you are free?",GREEN
+"Your order has been delivered successfully.",GREEN
+"आपका बिजली बिल आधिकारिक ऐप में उपलब्ध है।",GREEN
+"Aapka train ticket successfully booked hai.",GREEN
+"Congratulations! You have won a shopping voucher. Click here to claim.",ORANGE
+"Your reward points are expiring soon. Check the offer.",ORANGE
+"आपके लिए एक विशेष cashback offer उपलब्ध है।",ORANGE
+"Free movie tickets available for selected users.",ORANGE
+"Aapke parcel ke liye address update karna zaroori hai.",ORANGE
+"Urgent! Your bank account will be blocked. Share your OTP now.",RED
+"आपका KYC बंद हो जाएगा। तुरंत इस लिंक पर क्लिक करें।",RED
+"Police case avoid karne ke liye abhi payment karo.",RED
+"Send your UPI PIN to receive your refund.",RED
+"आपका SIM बंद होने वाला है। OTP साझा करके verification करें।",RED

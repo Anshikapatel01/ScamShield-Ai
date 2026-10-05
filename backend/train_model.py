@@ -2,7 +2,7 @@ import csv
 from pathlib import Path
 import joblib
 from sklearn.pipeline import Pipeline
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
 # Project ke folders
@@ -23,7 +23,7 @@ with open(dataset_path, "r", encoding="utf-8", newline="") as file:
 
 # Vectorizer aur model ko ek pipeline mein jodo
 model = Pipeline([
-    ("vectorizer", CountVectorizer()),
+    ("vectorizer", TfidfVectorizer()),
     ("classifier", MultinomialNB())
 ])
 
