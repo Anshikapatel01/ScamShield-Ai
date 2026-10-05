@@ -7,39 +7,52 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, "Noto Sans Devanagari", sans-serif;
+            font-size: 20px;
             background: #f0f4f8;
             margin: 0;
-            padding: 40px 20px;
+            padding: 24px 14px;
             text-align: center;
+            color: #1e293b;
         }
 
         .container {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 30px;
+            max-width: 640px;
+            margin: 20px auto;
+            padding: 24px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 15px #00000015;
         }
 
-        h1 {
-            color: #173b67;
-        }
+        h1 { color: #173b67; font-size: 2rem; margin: 0 0 8px; }
+        h2 { font-size: 1.3rem; color: #173b67; }
+        p { color: #526477; line-height: 1.5; }
 
-        p {
-            color: #526477;
+        .lang-switch { margin-bottom: 12px; }
+        .lang-switch button {
+            background: #e2e8f0;
+            color: #1e293b;
+            min-height: 44px;
+            padding: 8px 18px;
+            font-size: 1rem;
+            margin: 0 4px;
+        }
+        .lang-switch button[aria-pressed="true"] {
+            background: #1769aa;
+            color: white;
         }
 
         textarea {
             box-sizing: border-box;
             width: 100%;
-            height: 150px;
-            padding: 12px;
-            margin: 15px 0;
-            border: 1px solid #bdc9d6;
+            height: 170px;
+            padding: 14px;
+            margin: 14px 0;
+            border: 2px solid #94a3b8;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 1.1rem;
+            font-family: inherit;
             resize: vertical;
         }
 
@@ -47,233 +60,453 @@
             background: #1769aa;
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 14px 24px;
+            min-height: 56px;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 1.1rem;
+            font-family: inherit;
             cursor: pointer;
         }
+        button:disabled { opacity: 0.6; cursor: wait; }
 
-        button:disabled {
-            opacity: 0.6;
-            cursor: wait;
-        }
+        .main-actions { display: flex; gap: 10px; }
+        #checkButton { flex: 2; }
+        #clearButton { flex: 1; background: #64748b; }
+        #clearButton:hover { background: #475569; }
 
-        #result {
-            margin-top: 20px;
+        #loading {
+            margin-top: 16px;
+            color: #1769aa;
             font-weight: bold;
-            white-space: pre-line;
         }
 
         .result-card {
-    margin-top: 20px;
-    padding: 18px;
-    border-radius: 10px;
-    text-align: left;
-    line-height: 1.6;
-    white-space: pre-line;
-}
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 10px;
+            text-align: left;
+            line-height: 1.6;
+        }
+        .result-card.red    { background: #fee2e2; border: 2px solid #dc2626; color: #7f1d1d; }
+        .result-card.yellow { background: #fef9c3; border: 2px solid #ca8a04; color: #713f12; }
+        .result-card.green  { background: #dcfce7; border: 2px solid #16a34a; color: #14532d; }
 
-.result-card.red {
-    background: #fee2e2;
-    border: 1px solid #dc2626;
-    color: #991b1b;
-}
+        .verdict { font-size: 1.5rem; font-weight: bold; margin: 0 0 8px; color: inherit; }
+        .action  { font-size: 1.15rem; font-weight: bold; margin: 8px 0; color: inherit; }
+        .meta    { margin: 8px 0; color: inherit; }
+        .reasons { margin: 6px 0 6px 20px; padding: 0; }
+        .small   { font-size: 0.85rem; color: inherit; opacity: 0.85; }
 
-.result-card.orange {
-    background: #ffedd5;
-    border: 1px solid #ea580c;
-    color: #9a3412;
-}
+        #speakButton { background: #0f766e; margin-top: 10px; width: 100%; }
 
-.result-card.green {
-    background: #dcfce7;
-    border: 1px solid #16a34a;
-    color: #166534;
-}
-#clearButton {
-    background: #64748b;
-    margin-left: 8px;
-}
+        .helpline {
+            margin-top: 14px;
+            padding: 14px;
+            background: #ffffff;
+            border: 2px dashed #dc2626;
+            border-radius: 8px;
+            color: #7f1d1d;
+            font-weight: bold;
+        }
 
-#clearButton:hover {
-    background: #475569;
-}
+        #historySection { margin-top: 30px; text-align: left; }
+        .history-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            word-break: break-word;
+        }
+        .history-item p { margin: 0 0 6px; color: #1e293b; }
+        .delete-btn { background: #dc2626; padding: 8px 16px; min-height: 44px; margin-top: 8px; font-size: 1rem; }
+        #clearHistoryButton { background: #475569; width: 100%; margin-top: 8px; }
+
+        .disclaimer {
+            margin-top: 24px;
+            font-size: 0.85rem;
+            color: #526477;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 14px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <h1>🛡️ ScamShield AI</h1>
-        <p>Check suspicious messages before you trust them.</p>
+        <p data-i18n="tagline"></p>
 
-        <textarea id="message"
-            placeholder="Paste your message here..."></textarea>
+        <div class="lang-switch" role="group" aria-label="Language">
+            <button type="button" id="langEn" aria-pressed="true">English</button>
+            <button type="button" id="langHi" aria-pressed="false">हिन्दी</button>
+        </div>
 
-        <br>
-        <button id="checkButton">Check Message</button>
-        <button id="clearButton"type="button">Clear</button>
+        <textarea id="message"></textarea>
 
-        <div id="result" class="result-card" aria-live="polite"></div>
-        <div id="historySection" style="margin-top: 30px; text-align: left;">
-    <h2>Scan History</h2>
-    <div id="historyList">
-        <p>No scan history yet.</p>
-    </div>
-    <button id="clearHistoryButton" type="button">
-        Clear History
-    </button>
-</div>
+        <div class="main-actions">
+            <button id="checkButton" type="button"></button>
+            <button id="clearButton" type="button"></button>
+        </div>
+
+        <div id="loading" aria-live="polite"></div>
+        <div id="result" class="result-card" aria-live="polite" hidden></div>
+
+        <div id="historySection">
+            <h2 data-i18n="historyTitle"></h2>
+            <div id="historyList"></div>
+            <button id="clearHistoryButton" type="button"></button>
+        </div>
+
+        <p class="disclaimer" data-i18n="disclaimer"></p>
     </div>
 
     <script>
-        const button = document.getElementById("checkButton");
+        const API_URL = "https://scamshield-ai-t7gl.onrender.com/predict";
+
+        const T = {
+            en: {
+                tagline: "Check suspicious messages before you trust them.",
+                placeholder: "Paste your message here...",
+                check: "Check Message",
+                clear: "Clear",
+                checking: "Checking...",
+                wake: "The first check can take up to a minute. Please wait.",
+                empty: "Please enter a message first.",
+                error: "Something went wrong. Check your internet and try again.",
+                redTitle: "🔴 Likely SCAM",
+                redAction: "Do NOT click any link. Never share your OTP, PIN or password with anyone.",
+                yellowTitle: "🟡 Be careful",
+                yellowAction: "Before doing anything, ask your bank or a family member.",
+                greenTitle: "🟢 No warning signs found",
+                greenAction: "Still, stay alert.",
+                confidence: "Model confidence",
+                reasonsTitle: "Why we think so:",
+                noReasons: "No specific warning reasons found.",
+                reasonsNote: "(Reasons are shown in English.)",
+                listen: "🔊 Listen",
+                stop: "⏹ Stop",
+                helpline: "If money was taken or you are unsure, call 1930 right now or report at cybercrime.gov.in",
+                historyTitle: "Scan History",
+                noHistory: "No scan history yet.",
+                clearHistory: "Clear History",
+                del: "Delete",
+                risk: "Risk",
+                redShort: "RED (Scam)",
+                yellowShort: "YELLOW (Careful)",
+                greenShort: "GREEN (OK)",
+                disclaimer: "This is only a second opinion, not a 100% guarantee. Always confirm with your bank using its official number."
+            },
+            hi: {
+                tagline: "भरोसा करने से पहले संदिग्ध मैसेज जाँचें।",
+                placeholder: "यहाँ मैसेज पेस्ट करें...",
+                check: "मैसेज जाँचें",
+                clear: "साफ़ करें",
+                checking: "जाँच हो रही है...",
+                wake: "पहली जाँच में 1 मिनट तक लग सकता है। कृपया रुकें।",
+                empty: "पहले कोई मैसेज डालें।",
+                error: "कुछ गड़बड़ हो गई। इंटरनेट जाँचें और दोबारा कोशिश करें।",
+                redTitle: "🔴 ठगी की संभावना ज़्यादा है",
+                redAction: "कोई लिंक न खोलें। OTP, PIN या पासवर्ड किसी को न बताएं।",
+                yellowTitle: "🟡 सावधान रहें",
+                yellowAction: "कुछ भी करने से पहले अपने बैंक या परिवार के किसी सदस्य से पूछ लें।",
+                greenTitle: "🟢 कोई चेतावनी नहीं मिली",
+                greenAction: "फिर भी सावधान रहें।",
+                confidence: "मॉडल का भरोसा",
+                reasonsTitle: "ऐसा क्यों लगा:",
+                noReasons: "कोई खास कारण नहीं मिला।",
+                reasonsNote: "(कारण अंग्रेज़ी में दिखाए गए हैं।)",
+                listen: "🔊 सुनें",
+                stop: "⏹ रोकें",
+                helpline: "अगर पैसे कट गए हों या शक हो, तो अभी 1930 पर कॉल करें या cybercrime.gov.in पर शिकायत करें।",
+                historyTitle: "पिछली जाँच",
+                noHistory: "अभी तक कोई जाँच नहीं।",
+                clearHistory: "इतिहास मिटाएँ",
+                del: "हटाएँ",
+                risk: "जोखिम",
+                redShort: "लाल (ठगी)",
+                yellowShort: "पीला (सावधान)",
+                greenShort: "हरा (ठीक)",
+                disclaimer: "यह सिर्फ़ एक दूसरी राय है, 100% गारंटी नहीं। हमेशा बैंक के आधिकारिक नंबर से पुष्टि करें।"
+            }
+        };
+
+        // ---------- state ----------
+        let lang = "en";
+        try { lang = localStorage.getItem("lang") || "en"; } catch (e) {}
+        if (!T[lang]) lang = "en";
+        let lastResult = null;
+        let scanHistory = [];
+        try { scanHistory = JSON.parse(localStorage.getItem("scanHistory")) || []; } catch (e) {}
+
+        const t = k => T[lang][k];
+
+        // ---------- elements ----------
+        const checkButton = document.getElementById("checkButton");
         const clearButton = document.getElementById("clearButton");
-
-clearButton.addEventListener("click", function () {
-    document.getElementById("message").value = "";
-    resultBox.textContent = "";
-    resultBox.hidden = true;
-    resultBox.className = "result-card";
-});
+        const messageBox = document.getElementById("message");
         const resultBox = document.getElementById("result");
+        const loadingBox = document.getElementById("loading");
         const historyList = document.getElementById("historyList");
-const clearHistoryButton = document.getElementById("clearHistoryButton");
+        const clearHistoryButton = document.getElementById("clearHistoryButton");
+        const langEn = document.getElementById("langEn");
+        const langHi = document.getElementById("langHi");
 
-let scanHistory = JSON.parse(localStorage.getItem("scanHistory")) || [];
+        // ---------- language ----------
+        function applyLang() {
+            document.documentElement.lang = lang === "hi" ? "hi" : "en";
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                el.textContent = t(el.dataset.i18n);
+            });
+            messageBox.placeholder = t("placeholder");
+            checkButton.textContent = t("check");
+            clearButton.textContent = t("clear");
+            clearHistoryButton.textContent = t("clearHistory");
+            langEn.setAttribute("aria-pressed", lang === "en");
+            langHi.setAttribute("aria-pressed", lang === "hi");
+            displayHistory();
+            if (lastResult) renderResult(lastResult);
+        }
 
-function saveHistory(message, risk) {
-    const scan = {
-        message: message,
-        risk: risk,
-        time: new Date().toLocaleString()
-    };
+        function setLang(l) {
+            stopSpeaking();
+            lang = l;
+            try { localStorage.setItem("lang", l); } catch (e) {}
+            applyLang();
+        }
+        langEn.addEventListener("click", () => setLang("en"));
+        langHi.addEventListener("click", () => setLang("hi"));
 
-    scanHistory.unshift(scan);
-    scanHistory = scanHistory.splice(0,10);
+        // ---------- helpers ----------
+        function riskKind(risk) {
+            if (risk === "RED") return "red";
+            if (risk === "GREEN") return "green";
+            return "yellow"; // backend ORANGE (or anything unexpected) shows as yellow
+        }
 
-    localStorage.setItem("scanHistory", JSON.stringify(scanHistory));
+        function stopSpeaking() {
+            if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+        }
 
-    displayHistory();
-}
+        function speak(text) {
+            if (!("speechSynthesis" in window)) return;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = lang === "hi" ? "hi-IN" : "en-IN";
+            u.rate = 0.9;
+            window.speechSynthesis.speak(u);
+        }
 
-function displayHistory() {
-    historyList.innerHTML = "";
+        // ---------- result ----------
+        function renderResult(data) {
+            const kind = riskKind(data.risk);
+            const title = t(kind + "Title");
+            const action = t(kind + "Action");
 
-    if (scanHistory.length === 0) {
-        historyList.textContent = "No scan history yet.";
-        return;
-    }
+            resultBox.className = "result-card " + kind;
+            resultBox.hidden = false;
+            resultBox.textContent = "";
 
-    scanHistory.forEach(function (scan,index) {
-        const item = document.createElement("div");
-        item.style.padding = "12px";
-        item.style.marginBottom = "10px";
-        item.style.border = "1px solid #cbd5e1";
-        item.style.borderRadius = "8px";
+            const h = document.createElement("p");
+            h.className = "verdict";
+            h.textContent = title;
 
-        const message = document.createElement("p");
-        message.textContent = scan.message;
+            const a = document.createElement("p");
+            a.className = "action";
+            a.textContent = action;
 
-        const risk = document.createElement("strong");
-        risk.textContent = "Risk: " + scan.risk;
+            resultBox.append(h, a);
 
-        const time = document.createElement("small");
-time.textContent = scan.time;
+            if (data.confidence !== undefined && data.confidence !== null) {
+                const c = document.createElement("p");
+                c.className = "meta";
+                c.textContent = t("confidence") + ": " + data.confidence + "%";
+                resultBox.appendChild(c);
+            }
 
-const deleteButton = document.createElement("button");
-deleteButton.textContent = "Delete";
-deleteButton.style.background = "#dc2626";
-deleteButton.style.padding = "6px 12px";
-deleteButton.style.marginTop = "10px";
+            const rt = document.createElement("p");
+            rt.className = "meta";
+            rt.innerHTML = "";
+            const strong = document.createElement("strong");
+            strong.textContent = t("reasonsTitle");
+            rt.appendChild(strong);
+            resultBox.appendChild(rt);
 
-deleteButton.addEventListener("click", function () {
-    scanHistory.splice(index, 1);
-    localStorage.setItem("scanHistory", JSON.stringify(scanHistory));
-    displayHistory();
-});
+            if (data.reasons.length > 0) {
+                const ul = document.createElement("ul");
+                ul.className = "reasons";
+                data.reasons.forEach(r => {
+                    const li = document.createElement("li");
+                    li.textContent = r;
+                    ul.appendChild(li);
+                });
+                resultBox.appendChild(ul);
+                if (lang === "hi") {
+                    const n = document.createElement("p");
+                    n.className = "small";
+                    n.textContent = t("reasonsNote");
+                    resultBox.appendChild(n);
+                }
+            } else {
+                const n = document.createElement("p");
+                n.className = "meta";
+                n.textContent = t("noReasons");
+                resultBox.appendChild(n);
+            }
 
-item.append(message, risk, document.createElement("br"), time, document.createElement("br"), deleteButton);
-historyList.appendChild(item);
-    });
-}
+            if (kind === "red") {
+                const box = document.createElement("div");
+                box.className = "helpline";
+                box.textContent = "📞 " + t("helpline");
+                resultBox.appendChild(box);
+            }
 
-clearHistoryButton.addEventListener("click", function () {
-    scanHistory = [];
-    localStorage.removeItem("scanHistory");
-    displayHistory();
-});
+            if ("speechSynthesis" in window) {
+                const sp = document.createElement("button");
+                sp.id = "speakButton";
+                sp.type = "button";
+                sp.textContent = t("listen");
+                let speaking = false;
+                sp.addEventListener("click", function () {
+                    if (speaking) {
+                        stopSpeaking();
+                        speaking = false;
+                        sp.textContent = t("listen");
+                    } else {
+                        speak(title.replace(/[^\p{L}\p{N}\s]/gu, "") + ". " + action);
+                        speaking = true;
+                        sp.textContent = t("stop");
+                    }
+                });
+                resultBox.appendChild(sp);
+            }
+        }
 
-displayHistory();
+        // ---------- history ----------
+        function saveHistory(message, risk) {
+            scanHistory.unshift({ message: message, risk: risk, time: new Date().toLocaleString() });
+            scanHistory = scanHistory.slice(0, 10);
+            try { localStorage.setItem("scanHistory", JSON.stringify(scanHistory)); } catch (e) {}
+            displayHistory();
+        }
 
-        button.addEventListener("click", async function () {
-            const message = document.getElementById("message").value.trim();
+        function displayHistory() {
+            historyList.textContent = "";
 
-            if (!message) {
-                resultBox.textContent = "Please enter a message first.";
+            if (scanHistory.length === 0) {
+                const p = document.createElement("p");
+                p.textContent = t("noHistory");
+                historyList.appendChild(p);
                 return;
             }
 
-            button.disabled = true;
-            button.textContent = "Checking...";
+            scanHistory.forEach(function (scan, index) {
+                const item = document.createElement("div");
+                item.className = "history-item";
+
+                const msg = document.createElement("p");
+                msg.textContent = scan.message;
+
+                const risk = document.createElement("strong");
+                risk.textContent = t("risk") + ": " + t(riskKind(scan.risk) + "Short");
+
+                const time = document.createElement("div");
+                time.className = "small";
+                time.textContent = scan.time;
+
+                const del = document.createElement("button");
+                del.type = "button";
+                del.className = "delete-btn";
+                del.textContent = t("del");
+                del.addEventListener("click", function () {
+                    scanHistory.splice(index, 1);
+                    try { localStorage.setItem("scanHistory", JSON.stringify(scanHistory)); } catch (e) {}
+                    displayHistory();
+                });
+
+                item.append(msg, risk, time, del);
+                historyList.appendChild(item);
+            });
+        }
+
+        clearHistoryButton.addEventListener("click", function () {
+            scanHistory = [];
+            try { localStorage.removeItem("scanHistory"); } catch (e) {}
+            displayHistory();
+        });
+
+        // ---------- clear ----------
+        clearButton.addEventListener("click", function () {
+            stopSpeaking();
+            messageBox.value = "";
+            lastResult = null;
             resultBox.textContent = "";
+            resultBox.hidden = true;
+            resultBox.className = "result-card";
+            loadingBox.textContent = "";
+        });
+
+        // ---------- check ----------
+        checkButton.addEventListener("click", async function () {
+            const message = messageBox.value.trim();
+            stopSpeaking();
+
+            if (!message) {
+                lastResult = null;
+                resultBox.className = "result-card yellow";
+                resultBox.hidden = false;
+                resultBox.textContent = t("empty");
+                return;
+            }
+
+            checkButton.disabled = true;
+            checkButton.textContent = t("checking");
+            loadingBox.textContent = t("checking");
+            resultBox.hidden = true;
+
+            const wakeTimer = setTimeout(function () {
+                loadingBox.textContent = t("checking") + " " + t("wake");
+            }, 5000);
+
+            const controller = new AbortController();
+            const abortTimer = setTimeout(() => controller.abort(), 90000);
 
             try {
-               const response = await fetch("https://scamshield-ai-t7gl.onrender.com/predict", {
+                const response = await fetch(API_URL, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ message: message })
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: message }),
+                    signal: controller.signal
                 });
 
                 const data = await response.json();
 
                 if (!response.ok) {
-                    resultBox.textContent = "Error: " + JSON.stringify(data);
-                    return;
+                    throw new Error(JSON.stringify(data));
                 }
 
-                const risk = data.risk_level;
-
-let cardClass = "";
-let safetyMessage = "";
-
-if (risk === "RED") {
-    cardClass = "red";
-    safetyMessage = "Warning: This message may be dangerous. Do not share OTPs or passwords.";
-} else if (risk === "ORANGE") {
-    cardClass = "orange";
-    safetyMessage = "Caution: This message looks suspicious. Verify it before taking action.";
-} else {
-    cardClass = "green";
-    safetyMessage = "No known warning signs found. Still, stay alert.";
-}
-
-resultBox.className = "result-card " + cardClass;
-resultBox.hidden = false;
-
-const reasons = data.reasons || [];
-saveHistory(message,risk);
-
-resultBox.className = "result-card " + cardClass;
-resultBox.hidden = false;
-
-resultBox.textContent =
-    "Risk Level: " + risk +
-    "\nModel confidence: " + data.confidence + "%" +
-    "\n\n" + safetyMessage +
-    "\n\nWarning reasons:\n" +
-    (reasons.length > 0
-        ? reasons.map(reason => "• " + reason).join("\n")
-        : "No specific rule-based warning reasons found.");
+                lastResult = {
+                    risk: data.risk_level,
+                    confidence: data.confidence,
+                    reasons: Array.isArray(data.reasons) ? data.reasons : []
+                };
+                saveHistory(message, lastResult.risk);
+                renderResult(lastResult);
             } catch (error) {
-                resultBox.textContent = "Error:" + error.message; 
-                console.error("Scan error:",error);
+                console.error("Scan error:", error);
+                lastResult = null;
+                resultBox.className = "result-card yellow";
+                resultBox.hidden = false;
+                resultBox.textContent = t("error");
             } finally {
-                button.disabled = false;
-                button.textContent = "Check Message";
+                clearTimeout(wakeTimer);
+                clearTimeout(abortTimer);
+                loadingBox.textContent = "";
+                checkButton.disabled = false;
+                checkButton.textContent = t("check");
             }
         });
+
+        applyLang();
     </script>
 </body>
 </html>
